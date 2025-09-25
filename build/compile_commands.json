@@ -1,0 +1,14 @@
+[
+{
+  "directory": "E:/allianceTask/week1/log/build",
+  "command": "D:\\mingw64\\bin\\g++.exe  @CMakeFiles/main.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\main.dir\\src\\main.cpp.obj -c E:\\allianceTask\\week1\\log\\src\\main.cpp",
+  "file": "E:/allianceTask/week1/log/src/main.cpp",
+  "output": "CMakeFiles/main.dir/src/main.cpp.obj"
+},
+{
+  "directory": "E:/allianceTask/week1/log/build",
+  "command": "D:\\mingw64\\bin\\g++.exe  @CMakeFiles/main.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\main.dir\\src\\log.cpp.obj -c E:\\allianceTask\\week1\\log\\src\\log.cpp",
+  "file": "E:/allianceTask/week1/log/src/log.cpp",
+  "output": "CMakeFiles/main.dir/src/log.cpp.obj"
+}
+]

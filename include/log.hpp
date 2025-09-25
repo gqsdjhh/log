@@ -13,9 +13,13 @@
 #include <sstream>
 #include <stdexcept>
 
-// 将任意类型参数转换为字符串
+// 将任意类型转换为字符串
 template<typename T>
-std::string to_string(T&& arg);
+std::string to_string(T&& arg){
+    std::ostringstream oss;
+    oss << std::forward<T>(arg);
+    return oss.str();
+};
 
 // 线程安全的日志消息队列
 class LogQueue{
@@ -55,6 +59,42 @@ private:
     // 格式化日志消息(替换{})
     template<typename... Args>
     std::string formatMessage(const std::string& format, Args&&... args);
+};
+
+// 日志输出接口实现
+template<typename... Args>
+void Logger::log(const std::string& format, Args&&... args){
+    log_queue_.push(formatMessage(format, std::forward<Args>(args)...));
+};
+
+// 日志消息格式化实现
+template<typename... Args>
+std::string Logger::formatMessage(const std::string& format, Args&&... args){
+    std::vector<std::string> arg_strings = {to_string(std::forward<Args>(args))...};
+    std::ostringstream oss;
+    size_t arg_index = 0;
+    size_t pos = 0;
+    size_t placeholder = format.find("{}");
+    
+    while(placeholder != std::string::npos){
+        oss << format.substr(pos, placeholder - pos);
+        if(arg_index < arg_strings.size()){
+            oss << arg_strings[arg_index++];
+        }
+        else{
+            oss << "{}";
+        }
+    
+        pos = placeholder + 2;
+        placeholder = format.find("{}", pos);
+    }
+
+    oss << format.substr(pos);
+    while(arg_index < arg_strings.size()){
+        oss << arg_strings[arg_index++];
+    }
+
+    return oss.str();
 };
 
 #endif  

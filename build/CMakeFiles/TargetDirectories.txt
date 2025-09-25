@@ -1,0 +1,3 @@
+E:/allianceTask/week1/log/build/CMakeFiles/main.dir
+E:/allianceTask/week1/log/build/CMakeFiles/edit_cache.dir
+E:/allianceTask/week1/log/build/CMakeFiles/rebuild_cache.dir

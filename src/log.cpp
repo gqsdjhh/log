@@ -1,13 +1,5 @@
 #include "log.hpp"
 
-// 将任意类型转换为字符串
-template<typename T>
-std::string to_string(T&& arg){
-    std::ostringstream oss;
-    oss << std::forward<T>(arg);
-    return oss.str();
-}
-
 // 向日志队列添加消息
 void LogQueue::push(const std::string& msg){
     std::lock_guard<std::mutex> lock(mutex_);
@@ -70,39 +62,3 @@ Logger::~Logger(){
     }
 };
 
-// 日志输出接口实现
-template<typename... Args>
-void Logger::log(const std::string& format, Args&&... args){
-    log_queue_.push(formatMessage(format, std::forward<Args>(args)...));
-};
-
-// 日志消息格式化实现
-template<typename... Args>
-std::string Logger::formatMessage(const std::string& format, Args&&... args){
-    std::vector<std::string> arg_strings = {to_string(std::forward<Args>(args))...};
-    std::ostringstream oss;
-    size_t arg_index = 0;
-    size_t pos = 0;
-    size_t placeholder = format.find("{}");
-    
-    while(placeholder != std::string::npos){
-        oss << format.substr(pos, placeholder - pos);
-        if(arg_index < arg_strings.size()){
-            oss << arg_strings[arg_index++];
-        }
-        else{
-            oss << "{}";
-        }
-    
-        pos = placeholder + 2;
-        placeholder = format.find("{}", pos);
-    }
-
-    oss << format.substr(pos);
-    while(arg_index < arg_strings.size()){
-        oss << arg_strings[arg_index++];
-    }
-
-    return oss.str();
-};
-    
